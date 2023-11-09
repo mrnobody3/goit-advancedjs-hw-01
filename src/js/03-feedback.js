@@ -9,14 +9,20 @@ form.addEventListener('input', throttle(onInputForm, 500));
 function onSubmitForm(e) {
   e.preventDefault();
   console.log(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)));
-  form.reset();
   localStorage.removeItem(LOCAL_STORAGE_KEY);
+  form.reset();
 }
 
 function onInputForm(e) {
   const { name, value } = e.target;
-  saveDate[name] = value;
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(saveDate));
+  const storObj = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+  if (storObj) {
+    storObj[name] = value;
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storObj));
+  } else {
+    saveDate[name] = value;
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(saveDate));
+  }
 }
 
 function onFillInput() {
